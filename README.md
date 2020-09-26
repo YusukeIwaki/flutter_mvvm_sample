@@ -1,16 +1,28 @@
 # flutter_mvvm_sample
 
-A new Flutter project.
+| loading | loaded |
+|:--|:--|
+| `isLoading=true, data=[]` | `isLoading=false, data=[1,2,3]` |
+|![loading](images/loading.png)|![loaded](images/loaded.png)|
 
-## Getting Started
+```dart
+class HomePageState {
+  const HomePageState({this.isLoading = false, this.data = const []});
 
-This project is a starting point for a Flutter application.
+  final bool isLoading;
+  final List<int> data;
+}
 
-A few resources to get you started if this is your first Flutter project:
+class HomePageController extends StateNotifier<HomePageState> {
+  HomePageController() : super(const HomePageState());
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+  load() async {
+    state = HomePageState(isLoading: true, data: state.data);
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+    await Future.delayed(Duration(seconds: 3));
+
+    state = HomePageState(isLoading: false, data: [1, 2, 3] + state.data);
+  }
+}
+```
+
